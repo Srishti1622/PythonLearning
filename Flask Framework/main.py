@@ -13,7 +13,7 @@
 
 # first we need to install the flask library
 
-from flask import Flask
+from flask import Flask, render_template
 
 # It creates an instance of the Flask class, which will be your WSGI application
 app=Flask(__name__)
@@ -26,6 +26,14 @@ def welcome():
 @app.route('/index')
 def index():
     return "Welcome to index page."
+
+@app.route('/htmlline')
+def htmlline():
+    return "<h1>directly returning html line of code</h1>"
+    
+@app.route('/html')
+def htmlIntegrate():
+    return render_template('index.html')
 
 # entry point of the any .py file
 # .run() will run the flask application. It take two important parameter host as string and debug as boolean
