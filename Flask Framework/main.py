@@ -13,12 +13,13 @@
 
 # first we need to install the flask library
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 # It creates an instance of the Flask class, which will be your WSGI application
 app=Flask(__name__)
 
-# .route() is a decorator which take rules as first argument in form of string which means as soon as we hit that route it will execute the below fundtion
+# .route() is a decorator which take rules as first parameter in form of string which means as soon as we hit that route it will execute the below fundtion
+# second parameter it take is methods, by default if haven't specified then it will be GET
 @app.route('/')
 def welcome():
     return "Welcome to this Flask course."
@@ -30,10 +31,20 @@ def index():
 @app.route('/htmlline')
 def htmlline():
     return "<h1>directly returning html line of code</h1>"
-    
+
+# render_template() is responsible to redirect to mentioned html page
 @app.route('/html')
 def htmlIntegrate():
     return render_template('index.html')
+
+@app.route('/form',methods=['GET','POST'])
+def form():
+    if request.method=='POST':
+        print("post request triggered")
+        # id value given in form field here 'name'
+        name=request.form['name']
+        return f'Hello {name}!'
+    return render_template('form.html')
 
 # entry point of the any .py file
 # .run() will run the flask application. It take two important parameter host as string and debug as boolean
