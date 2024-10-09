@@ -37,7 +37,7 @@ def htmlline():
 def htmlIntegrate():
     return render_template('index.html')
 
-@app.route('/form',methods=['GET','POST'])
+@app.route('/submit',methods=['GET','POST'])
 def form():
     if request.method=='POST':
         print("post request triggered")
@@ -45,6 +45,29 @@ def form():
         name=request.form['name']
         return f'Hello {name}!'
     return render_template('form.html')
+
+# Variable Rule ( restricting the parameter value to be of mentioned datatype)
+# @app.route('/success/<int:score>')
+@app.route('/success/<score>')
+def success(score):
+    if type(score)==int:
+        return "This value is in int so we have typecasted it " + str(score)
+    return "The value by default is string if no datatype specified "+ score
+
+# Jinja2 Template Engine
+# {{ }} expressions to print output in html
+# {%  %} conditions, for loop
+# {#  #} this is for comments
+# this is how to pass value in html page 
+@app.route('/passvaluetohtml/<int:value>')
+def passvaluetohtml(value):
+    res=""
+    if value<=10:
+        res="{{}}"
+    else:
+        res={'value':value,'res':'{%   %}'}
+    return render_template('result.html',results=res)
+
 
 # entry point of the any .py file
 # .run() will run the flask application. It take two important parameter host as string and debug as boolean

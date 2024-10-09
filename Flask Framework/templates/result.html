@@ -1,0 +1,17 @@
+<html>
+
+<body>
+
+    {% if results=='{{}}' %}
+        <p>this output is from variable in flask and displaying here using {{results}}</p>
+    {% else %}
+        {% for key,value in results.items() %}
+        {# this is comment section #}
+            <h4>{{ key }}</h4>
+            <p>{{ value }}</p>
+        {% endfor %}
+    {% endif %}
+    
+</body>
+
+</html>
