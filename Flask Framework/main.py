@@ -13,7 +13,7 @@
 
 # first we need to install the flask library
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 # It creates an instance of the Flask class, which will be your WSGI application
 app=Flask(__name__)
@@ -42,6 +42,7 @@ def form():
     if request.method=='POST':
         print("post request triggered")
         # id value given in form field here 'name'
+        # it will be by default string
         name=request.form['name']
         return f'Hello {name}!'
     return render_template('form.html')
@@ -52,6 +53,10 @@ def form():
 def success(score):
     if type(score)==int:
         return "This value is in int so we have typecasted it " + str(score)
+    return "The value by default is string if no datatype specified "+ score
+
+@app.route('/fail/<score>')
+def fail(score):
     return "The value by default is string if no datatype specified "+ score
 
 # Jinja2 Template Engine
@@ -67,6 +72,16 @@ def passvaluetohtml(value):
     else:
         res={'value':value,'res':'{%   %}'}
     return render_template('result.html',results=res)
+
+# Building url dynamically
+# url_for() is used to create dynamic urls
+# redirect() is used to redirect to mentioned url
+@app.route('/dynamicurl/<int:value>')
+def dynamicurl(value):
+    score=value+10
+    if value<=10:
+        return redirect(url_for('success',score=score))
+    return redirect(url_for('fail',score=score))
 
 
 # entry point of the any .py file
