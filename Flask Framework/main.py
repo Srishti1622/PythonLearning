@@ -37,6 +37,7 @@ def htmlline():
 def htmlIntegrate():
     return render_template('index.html')
 
+# HTTP Verbs - GET, POST
 @app.route('/submit',methods=['GET','POST'])
 def form():
     if request.method=='POST':
@@ -46,6 +47,9 @@ def form():
         name=request.form['name']
         return f'Hello {name}!'
     return render_template('form.html')
+
+# HTTP Verbs - PUT, DELETE
+# see the implementation example in todo app
 
 # Variable Rule ( restricting the parameter value to be of mentioned datatype)
 # @app.route('/success/<int:score>')
