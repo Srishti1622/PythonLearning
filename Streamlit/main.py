@@ -47,3 +47,6 @@ uploaded=st.file_uploader("Choose a CSV file",type="csv")
 if uploaded is not None:
     df=pd.read_csv(uploaded)
     st.write(df)
+
+# inbuilt sidebar in streamlit ui
+st.sidebar.write("this is the fixed left sidebar")
