@@ -16,6 +16,7 @@
 # To run the FastAPI code, we need to run the command-
 # uvicorn filename:object(instance name) --reload
 # in this case, uvicorn main:app --reload
+# here --reload means when we make any change to our fastapi code it will automaticaally detect the changes and restart the server
 
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
@@ -24,11 +25,25 @@ from fastapi import FastAPI
 # this is used to get the data from ui in case of post method
 # defines how data should be in pure, canonical python and validate it with pydantic
 from pydantic import BaseModel
+# to make class with whatever data is avaiable, it will provide inbuild data validation
+from enum import Enum
 
 # define a class based on parameters you required from ui
 class User(BaseModel):
     name: str
     age: int
+
+# define a class based on whatever we want to make user see
+class AvaiableFood(str ,Enum):
+    indian='indian'
+    american='american'
+    italian='italian'
+
+fooditems={
+    'indian':['Samosa','Dosa'],
+    'american':['hot dog','apple pie'],
+    'italian':['ravioli','pizza']
+}
 
 # creating an instance of fastAPI
 app = FastAPI()
@@ -63,6 +78,12 @@ def posttesting(user:User):
     if age >= 18:
         msg='You are adult now'
     return {'message':msg}
+
+# case to test enum
+# as here we are using this enum, we don't need to explixity apply validation to check is the user provided food name is present or not 
+@app.get('/getitems/{foodname}')
+def getitems(foodname: AvaiableFood):
+    return {'msg':f'you selected {foodname}','fooditems':fooditems.get(foodname)}
 
 # entry point of code, run the api with uvicorn
 # will run on http://127.0.0.1:8000
