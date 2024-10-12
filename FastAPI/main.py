@@ -68,3 +68,19 @@ def posttesting(user:User):
 # will run on http://127.0.0.1:8000
 if __name__=="__main__":
     uvicorn.run(app,host='127.0.0.1',port=800)
+
+# For Deployement in Heroku 
+
+# requirements to deploy the fastapi in heroku 
+# gunicorn==19.9.0
+# uvloop - dependency of uvicorn
+# httptools - dependency of uvicorn
+# need to have file named "Procfile" with command - web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker main:app
+# it's not a text file, need to check for file extention
+# here the ccommand description as:
+# - web: is specific to Procfile command convention that will help identify the Heroku deployement process to start a web application with the command next to it.
+# - gunicorn is the WSGI server to which we are configuring our application to tun, with the following configuration
+# - w 4 indicates that we need our application to tun on gunicorn with 4 worker processes
+# - k uvicorn.workers.UvicornWorker tells the gunicornto run the application using uvicorn.workers.UvicornWorker worker class
+# - main:app is our module main where our FastAPI() app is initialized
+
