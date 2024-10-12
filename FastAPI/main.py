@@ -20,6 +20,15 @@
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
 from fastapi import FastAPI
+# pydantic enforces type hints at runtime, and provides user friendly error when data is invalid
+# this is used to get the data from ui in case of post method
+# defines how data should be in pure, canonical python and validate it with pydantic
+from pydantic import BaseModel
+
+# define a class based on parameters you required from ui
+class User(BaseModel):
+    name: str
+    age: int
 
 # creating an instance of fastAPI
 app = FastAPI()
@@ -34,10 +43,26 @@ def index():
     return {'messgae':'Hello, API'}
 
 # this url will get from /docs
-# url will be like http://locahost:8000/Welcome?name=name
-@app.get('/Welcome')
+# url will be like http://locahost:8000/welcome?name=name
+@app.get('/welcome')
 def welcome(name:str):
     return {'message':f'hello, {name}'}
+
+# provide the dynamic data in the url to hit 
+@app.get('/{name}')
+def get_name(name:str):
+    return {'message':f'hello, {name} getting from /name dynamically'}
+
+# this will be expecting body as it's a post method
+@app.post('/posttesting')
+def posttesting(user:User):
+    user=user.dict()
+    name=user['name']
+    age=user['age']
+    msg="You are a kid bro"
+    if age >= 18:
+        msg='You are adult now'
+    return {'message':msg}
 
 # entry point of code, run the api with uvicorn
 # will run on http://127.0.0.1:8000
