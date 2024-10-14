@@ -1,5 +1,7 @@
 # Reference - https://fastapi.tiangolo.com/tutorial/
 # FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.
+# Important: fastAPI looks in a chronological order from top to bottom to see what matches the URL so, try to write the function and endpoints by small to large urls
+
 # It uses ASGI (Asynchronous Server Gateway Interface) which is a spiritual successor of WSGI (Web Server Gateway Interface) 
 
 # The key difference between ASGI (Asynchronous Server Gateway Interface) and WSGI (Web Server Gateway Interface) is how they handle requests, specifically synchronous vs. asynchronous requests.
@@ -51,6 +53,7 @@ app = FastAPI()
 # there is one url as http://localhost:8000/docs
 # It will display the complete code in ui for testing our written APIs 
 # similar we have /redoc
+# this is what called as "Swagger UI"
 
 # Index route, opens automatically on http://127.0.0.1:8000
 @app.get('/')
