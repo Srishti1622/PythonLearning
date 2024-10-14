@@ -51,10 +51,9 @@ def ndcg_at_k(retrieved, relevant, k):
     return dcg_k / idcg_k
 
 # Main function to evaluate the retrieval system
-def evaluate_retrieval_system(retrieved_tables, ground_truth_tables, k=3):
+def evaluate_retrieval_system(retrieved_tables, ground_truth_tables, k=3, f1_threshold=0.5):
     assert len(retrieved_tables) == len(ground_truth_tables), "Mismatch between queries and ground truths."
-
-    total_precision, total_recall, total_f1, total_mrr, total_ndcg = 0, 0, 0, 0, 0
+    results = []
 
     for retrieved, relevant in zip(retrieved_tables, ground_truth_tables):
         precision = precision_at_k(retrieved, relevant, k)
@@ -63,27 +62,22 @@ def evaluate_retrieval_system(retrieved_tables, ground_truth_tables, k=3):
         mrr_score = mrr(retrieved, relevant)
         ndcg_score = ndcg_at_k(retrieved, relevant, k)
 
-        total_precision += precision
-        total_recall += recall
-        total_f1 += f1
-        total_mrr += mrr_score
-        total_ndcg += ndcg_score
+        # Determine if the result is "Good" or "Bad"
+        quality = "Good" if f1 >= f1_threshold else "Bad"
 
-    n = len(retrieved_tables)
+        # Store the results for each question
+        results.append({
+            'Retrieved': retrieved,
+            'Relevant': relevant,
+            'Precision@{}:'.format(k): precision,
+            'Recall@{}:'.format(k): recall,
+            'F1@{}:'.format(k): f1,
+            'MRR': mrr_score,
+            'NDCG@{}:'.format(k): ndcg_score,
+            'Quality': quality
+        })
 
-    avg_precision = total_precision / n
-    avg_recall = total_recall / n
-    avg_f1 = total_f1 / n
-    avg_mrr = total_mrr / n
-    avg_ndcg = total_ndcg / n
-
-    return {
-        'Precision@{}:'.format(k): avg_precision,
-        'Recall@{}:'.format(k): avg_recall,
-        'F1@{}:'.format(k): avg_f1,
-        'MRR': avg_mrr,
-        'NDCG@{}:'.format(k): avg_ndcg
-    }
+    return results
 
 # Example usage:
 
@@ -100,5 +94,11 @@ ground_truth_tables = [
 ]
 
 # Evaluate the retrieval system
-results = evaluate_retrieval_system(retrieved_tables, ground_truth_tables, k=1)
-print(results)
+results = evaluate_retrieval_system(retrieved_tables, ground_truth_tables, k=3, f1_threshold=0.5)
+
+# Print the detailed results for each question
+for idx, result in enumerate(results, start=1):
+    print(f"Query {idx} Results:")
+    for key, value in result.items():
+        print(f"  {key}: {value}")
+    print()  # Newline for better separation
