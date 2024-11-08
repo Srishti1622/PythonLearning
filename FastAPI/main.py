@@ -137,20 +137,21 @@ items=[
     {'name':'four','category':'four'},
 ]
 
-@app.get('/readitems/{name}')
+# status_code=status.HTTP_200_OK : explicitly mentioning status code 
+@app.get('/readitems/{name}', status_code=status.HTTP_200_OK)
 def readitems(name: str):
     for i in range(len(items)):
         if items[i].get('name').casefold()==name.casefold():
             return items[i]
     raise HTTPException(status_code=404, detail='Item not found')
 
-@app.post('/additems')
+@app.post('/additems', status_code=status.HTTP_201_CREATED)
 def additems(food=Body()):
     items.append(food)
     return items
 
 # put method also have body to whatever data we want to update
-@app.put('/updateitems')
+@app.put('/updateitems', status_code=status.HTTP_204_NO_CONTENT)
 def updateitems(food=Body()):
     item_changed=False
     for i in range(len(items)):
@@ -162,7 +163,7 @@ def updateitems(food=Body()):
         raise HTTPException(status_code=404, detail='No item found with mentioned name')
     return items
 
-@app.delete('/deleteitems/{name}')
+@app.delete('/deleteitems/{name}', status_code=status.HTTP_204_NO_CONTENT)
 def deleteitems(name: str):
     for i in range(len(items)):
         if items[i].get('name').casefold()==name.casefold():
