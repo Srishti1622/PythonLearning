@@ -35,14 +35,25 @@ from fastapi import FastAPI, Body
 # 1- .dict() function is now renamed to .model_dump()
 # 2- schema_extra function within a Config class is now renamed to json_schema_extra
 # 3- Optional variables need a =None example: id: Optional[int] = None
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from typing import Optional
 # to make class with whatever data is avaiable, it will provide inbuild data validation
 from enum import Enum
 
 # define a class based on parameters you required from ui
 class User(BaseModel):
     name: str
-    age: int
+    age: int = Field(gt=0)
+
+# model_config is used to create more descriptive request example within our swagger docus
+    model_config={
+        "json_schema_extra":{
+            "example":{
+                "name":"Srishti",
+                "age": 24
+            }
+        }
+    }
 
 # define a class based on whatever we want to make user see
 class AvaiableFood(str ,Enum):
@@ -94,7 +105,10 @@ def query_parameter(testing: int):
 # this will be expecting body as it's a post method
 @app.post('/posttesting')
 def posttesting(user:User):
-    user=user.dict()
+    user=user.dict() 
+    # if .dict() not work then use .model_dump()
+    # user=User(**user.dict())
+    # print(type(user))
     name=user['name']
     age=user['age']
     msg="You are a kid bro"
@@ -107,6 +121,14 @@ def posttesting(user:User):
 @app.get('/getitems/{foodname}')
 def getitems(foodname: AvaiableFood):
     return {'msg':f'you selected {foodname}','fooditems':fooditems.get(foodname)}
+
+class Items(BaseModel):
+    id: Optional[int] = Field(title="id is not needed") # pydantic v1
+    # id: Optional[int] = None # pydantic v2
+    title: str = Field(min_length=3)
+    author: str = Field(min_length=1)
+    description: str = Field(min_length=1, max_length=100)
+    rating: int = Field(gt=0,lt=6)
 
 items=[
     {'name':'one','category':'one'},
