@@ -25,7 +25,7 @@
 
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Body
 # pydantic enforces type hints at runtime, and provides user friendly error when data is invalid
 # this is used to get the data from ui in case of post method
 # defines how data should be in pure, canonical python and validate it with pydantic
@@ -100,6 +100,26 @@ def posttesting(user:User):
 @app.get('/getitems/{foodname}')
 def getitems(foodname: AvaiableFood):
     return {'msg':f'you selected {foodname}','fooditems':fooditems.get(foodname)}
+
+items=[
+    {'name':'one','category':'one'},
+    {'name':'two','category':'two'},
+    {'name':'three','category':'three'},
+    {'name':'four','category':'four'},
+]
+@app.post('/additems')
+def additems(food=Body()):
+    items.append(food)
+    return items
+
+# put method also have body to whatever data we want to update
+@app.put('/updateitems')
+def updateitems(food=Body()):
+    for i in range(len(items)):
+        print(items[i])
+        if items[i].get('name').casefold()==food.get('name').casefold():
+            items[i]=food
+    return items
 
 # entry point of code, run the api with uvicorn
 # will run on http://127.0.0.1:8000
