@@ -37,6 +37,7 @@ from fastapi import FastAPI, Body, Path, Query, HTTPException
 # 3- Optional variables need a =None example: id: Optional[int] = None
 from pydantic import BaseModel, Field
 from typing import Optional
+from starlette import status
 # to make class with whatever data is avaiable, it will provide inbuild data validation
 from enum import Enum
 
