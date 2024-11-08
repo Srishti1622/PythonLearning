@@ -29,6 +29,12 @@ from fastapi import FastAPI, Body
 # pydantic enforces type hints at runtime, and provides user friendly error when data is invalid
 # this is used to get the data from ui in case of post method
 # defines how data should be in pure, canonical python and validate it with pydantic
+# FastAPI is now compatible with both Pydantic v1 and Pydantic v2.
+# Based on how new the version of FastAPI you are using, there could be small method name changes.
+# The three biggest are:
+# 1- .dict() function is now renamed to .model_dump()
+# 2- schema_extra function within a Config class is now renamed to json_schema_extra
+# 3- Optional variables need a =None example: id: Optional[int] = None
 from pydantic import BaseModel
 # to make class with whatever data is avaiable, it will provide inbuild data validation
 from enum import Enum
@@ -78,6 +84,7 @@ def get_name(name:str):
 
 # query parameters: are request parameters that have been attached after "?" and have name=value pair as
 # /books/?category=maths
+# query parameters are sort and filter through data that is not marked by a path parameter
 @app.get('/query/')
 def query_parameter(testing: int):
     if testing>10:
@@ -119,6 +126,14 @@ def updateitems(food=Body()):
         print(items[i])
         if items[i].get('name').casefold()==food.get('name').casefold():
             items[i]=food
+    return items
+
+@app.delete('/deleteitems/{name}')
+def deleteitems(name: str):
+    for i in range(len(items)):
+        if items[i].get('name').casefold()==name.casefold():
+            items.pop(i)
+            break
     return items
 
 # entry point of code, run the api with uvicorn
