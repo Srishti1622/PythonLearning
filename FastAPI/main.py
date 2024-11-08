@@ -19,6 +19,9 @@
 # uvicorn filename:object(instance name) --reload
 # in this case, uvicorn main:app --reload
 # here --reload means when we make any change to our fastapi code it will automaticaally detect the changes and restart the server
+# Also there is another way to run fastapi app as-
+# fastapi run filename.py  -- to run at production level mode
+# fastapi dev filename-py -- to run at development level mode
 
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
@@ -91,7 +94,7 @@ def getitems(foodname: AvaiableFood):
 # entry point of code, run the api with uvicorn
 # will run on http://127.0.0.1:8000
 if __name__=="__main__":
-    uvicorn.run(app,host='127.0.0.1',port=800)
+    uvicorn.run(app,host='127.0.0.1',port=8000)
 
 # For Deployement in Heroku 
 
