@@ -25,7 +25,7 @@
 
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
-from fastapi import FastAPI, Body, Path, Query
+from fastapi import FastAPI, Body, Path, Query, HTTPException
 # pydantic enforces type hints at runtime, and provides user friendly error when data is invalid
 # this is used to get the data from ui in case of post method
 # defines how data should be in pure, canonical python and validate it with pydantic
@@ -136,6 +136,14 @@ items=[
     {'name':'three','category':'three'},
     {'name':'four','category':'four'},
 ]
+
+@app.get('/readitems/{name}')
+def readitems(name: str):
+    for i in range(len(items)):
+        if items[i].get('name').casefold()==name.casefold():
+            return items[i]
+    raise HTTPException(status_code=404, detail='Item not found')
+
 @app.post('/additems')
 def additems(food=Body()):
     items.append(food)
@@ -144,10 +152,14 @@ def additems(food=Body()):
 # put method also have body to whatever data we want to update
 @app.put('/updateitems')
 def updateitems(food=Body()):
+    item_changed=False
     for i in range(len(items)):
         print(items[i])
         if items[i].get('name').casefold()==food.get('name').casefold():
             items[i]=food
+            item_changed=True
+    if not item_changed:
+        raise HTTPException(status_code=404, detail='No item found with mentioned name')
     return items
 
 @app.delete('/deleteitems/{name}')
