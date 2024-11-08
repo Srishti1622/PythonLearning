@@ -178,3 +178,24 @@ if __name__=="__main__":
 # - k uvicorn.workers.UvicornWorker tells the gunicornto run the application using uvicorn.workers.UvicornWorker worker class
 # - main:app is our module main where our FastAPI() app is initialized
 
+# Status Codes
+# An HTTP Status Code is used to help the Client(the user or system submitting data to the server) to understand what happened on the server side application
+# -- 1xx -> Information Response: Request Processing
+# -- 2xx -> Success: Request Successfully complete
+# -- 3xx -> Redirection: Further action must be complete
+# -- 4xx -> Client Errors: An error was caused by the client
+# -- 5xx -> Server Errors: An error occurred on the server
+
+# 2xx Successful Status Codes:
+# -- 200: OK -> Standard response for a Successful request. commonly used for Successful GET requests when data is being returned
+# -- 201: Created -> The request has been Successful, creating a new resource. Used when a POST creates an entity
+# -- 204: No Content -> The request has been Successful, did not create an entity nor return anything. Commonly used with PUt requests
+
+# 4xx Successful Status Codes:
+# -- 200: Bad Request -> Cannot process request due to client error. Commonly used for invalid request methods
+# -- 401: Unauthorized -> Client does not have valid authentication for target resource
+# -- 404: Not Found -> The clients requested resource can not be found 
+# -- 422: Unprocessable Entity -> Semantic Errors in Client Request
+
+# 5xx Successful Status Codes:
+# -- 500: Internal Server Error -> Generic Error Message, when an unexpected issue on the server happened
