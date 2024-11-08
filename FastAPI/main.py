@@ -1,6 +1,6 @@
 # Reference - https://fastapi.tiangolo.com/tutorial/
 # FastAPI is a modern, fast (high-performance), web framework for building APIs with Python 3.6+ based on standard Python type hints.
-# Important: fastAPI looks in a chronological order from top to bottom to see what matches the URL so, try to write the function and endpoints by small to large urls
+# Important: fastAPI looks in a chronological order from top to bottom to see what matches the URL so, try to write the function and endpoints by small to large urls, specially in case of path parameters
 
 # It uses ASGI (Asynchronous Server Gateway Interface) which is a spiritual successor of WSGI (Web Server Gateway Interface) 
 
@@ -69,10 +69,20 @@ def index():
 def welcome(name:str):
     return {'message':f'hello, {name}'}
 
-# provide the dynamic data in the url to hit 
+# path paramters: provide the dynamic data in the url to hit 
+# %20 means space in dynamic urls
+# keep in mind that order matters with path parameters as if "/books/{dynamic_params}" comes first and then "/books/mybook", so 2nd endpoint will never get executed as it will consider mybook as dynamic params and always go to 1st endpoint
 @app.get('/{name}')
 def get_name(name:str):
     return {'message':f'hello, {name} getting from /name dynamically'}
+
+# query parameters: are request parameters that have been attached after "?" and have name=value pair as
+# /books/?category=maths
+@app.get('/query/')
+def query_parameter(testing: int):
+    if testing>10:
+        return {'message':'testing is greater than 10'}
+    return {'message':'testing is under 10'}
 
 # this will be expecting body as it's a post method
 @app.post('/posttesting')
