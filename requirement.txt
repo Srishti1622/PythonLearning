@@ -2,3 +2,4 @@ flask
 streamlit
 fastapi
 uvicorn
+sqlalchemy
