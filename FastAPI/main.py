@@ -25,7 +25,7 @@
 
 # It is neccesary to import uvicorn as we will be mentioning that it has to follow ASGI Interface
 import uvicorn
-from fastapi import FastAPI, Body
+from fastapi import FastAPI, Body, Path, Query
 # pydantic enforces type hints at runtime, and provides user friendly error when data is invalid
 # this is used to get the data from ui in case of post method
 # defines how data should be in pure, canonical python and validate it with pydantic
@@ -90,14 +90,14 @@ def welcome(name:str):
 # %20 means space in dynamic urls
 # keep in mind that order matters with path parameters as if "/books/{dynamic_params}" comes first and then "/books/mybook", so 2nd endpoint will never get executed as it will consider mybook as dynamic params and always go to 1st endpoint
 @app.get('/{name}')
-def get_name(name:str):
+def get_name(name:str = Path(min_length=5)):
     return {'message':f'hello, {name} getting from /name dynamically'}
 
 # query parameters: are request parameters that have been attached after "?" and have name=value pair as
 # /books/?category=maths
 # query parameters are sort and filter through data that is not marked by a path parameter
 @app.get('/query/')
-def query_parameter(testing: int):
+def query_parameter(testing: int = Query(gt=4)):
     if testing>10:
         return {'message':'testing is greater than 10'}
     return {'message':'testing is under 10'}
