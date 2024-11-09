@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException, Path
+from starlette import status
 # importing models.py file
 import models
 from models import Todos
@@ -35,6 +36,15 @@ def get_db():
 
 # Dependency injection just means in programming that we need to do something before we execute what we're trying to execute which will allow us to be able to do some kind of code behind the scenes and then inject the dependencies that that function relies on
 # here this function relies on our DB opening up, we want to create a session and being able to then return that information back to us and then closing the session behind the scenes
-@app.get('/')
-def read_all(db: Annotated[Session, Depends(get_db)]):
+db_dependency = Annotated[Session, Depends(get_db)]
+
+@app.get('/', status_code=status.HTTP_200_OK)
+def read_all_todos(db: db_dependency):
     return db.query(Todos).all()
+
+@app.get('/todo/{todo_id}', status_code=status.HTTP_200_OK)
+def read_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+    if todo_model is not None:
+        return todo_model
+    raise HTTPException(status_code=404, detail='Todo not found')
