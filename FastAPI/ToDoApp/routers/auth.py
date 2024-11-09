@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from models import Users
 from passlib.context import CryptContext
@@ -6,6 +6,8 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from database import SessionLocal
 from starlette import status
+# special form that will be sight;y more secure than fastapi form, using this will be able to see the form in swagger ui itself
+from fastapi.security import OAuth2PasswordRequestForm
 
 # it's a route instead of entire application which will be using in main.py file
 router=APIRouter()
@@ -21,6 +23,15 @@ def get_db():
         db.close()
 
 db_dependency = Annotated[Session, Depends(get_db)]
+formData = Annotated[OAuth2PasswordRequestForm, Depends()]
+
+def authenticate_user(username, password, db):
+    user = db.query(Users).filter(Users.username==username).first()
+    if not user:
+        return False
+    if not bcrypt_context.verify(password, user.hashed_password):
+        return False
+    return True
 
 # not added id and is_active as id is auto-increament and is_active as initial created user will stay active
 class UserRequest(BaseModel):
@@ -50,6 +61,8 @@ def create_user(db: db_dependency, user: UserRequest):
     db.add(user_model)
     db.commit()
 
-@router.post('/token')
-def login_for_access_token():
-    return 'token'
+@router.post('/authcheck')
+def login_for_access_token(form: formData, db: db_dependency):
+    if not authenticate_user(form.username,form.password,db):
+        raise HTTPException(status_code=404,detail='Either user does not exists or invalid password')
+    return 'user authenticated successful'
