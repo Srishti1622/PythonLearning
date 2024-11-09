@@ -8,13 +8,11 @@ from models import Todos
 from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
+# import to inject dependency for user authentication
 from .auth import get_current_user
 
 
-router=APIRouter(
-    prefix='/todo',
-    tags=['todoApp']
-)
+router=APIRouter()
 
 # If sqlite3 is installed then we make use of terminal to manipulate database 
 # it will open sqlite environment
@@ -88,9 +86,24 @@ def create_todo(user: user_dependency, db: db_dependency, todo: ToDoRequest):
     db.add(todo_model)
     db.commit()
 
+# @router.put('/todo/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
+# def update_specific_todo(db: db_dependency, todo: ToDoRequest, todo_id: int = Path(gt=0)):
+#     todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+#     if todo_model is None:
+#         raise HTTPException(status_code=404, detail='Todo not found')
+    
+#     todo_model.title=todo.title
+#     todo_model.description=todo.description
+#     todo_model.priority=todo.priority
+#     todo_model.complete=todo.complete
+
+#     db.add(todo_model)
+#     db.commit()
 @router.put('/todo/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
-def update_specific_todo(db: db_dependency, todo: ToDoRequest, todo_id: int = Path(gt=0)):
-    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+def update_specific_todo(user: user_dependency, db: db_dependency, todo: ToDoRequest, todo_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication failed!')
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id==user.get('id')).first()
     if todo_model is None:
         raise HTTPException(status_code=404, detail='Todo not found')
     
@@ -102,11 +115,21 @@ def update_specific_todo(db: db_dependency, todo: ToDoRequest, todo_id: int = Pa
     db.add(todo_model)
     db.commit()
 
+# @router.delete('/todo/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
+# def delete_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
+#     todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+#     if todo_model is None:
+#         raise HTTPException(status_code=404, detail='Todo not found')
+
+#     db.query(Todos).filter(Todos.id==todo_id).delete()
+#     db.commit()
 @router.delete('/todo/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
-def delete_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
-    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+def delete_specific_todo(user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication failed!')
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id==user.get('id')).first()
     if todo_model is None:
         raise HTTPException(status_code=404, detail='Todo not found')
 
-    db.query(Todos).filter(Todos.id==todo_id).delete()
+    db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id==user.get('id')).delete()
     db.commit()

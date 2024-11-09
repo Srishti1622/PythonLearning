@@ -4,7 +4,7 @@ import models
 # import engine which we have created in database.py file
 from database import engine, SessionLocal
 # import auth from auth.py file 
-from routers import auth, todos
+from routers import auth, todos, admin
 
 
 app=FastAPI()
@@ -17,3 +17,4 @@ models.Base.metadata.create_all(bind=engine)
 # if more than one router present then include all in each new line
 app.include_router(auth.router)
 app.include_router(todos.router)
+app.include_router(admin.router)
