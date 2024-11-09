@@ -6,14 +6,27 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from database import SessionLocal
 from starlette import status
+from datetime import timedelta, datetime, timezone
 # special form that will be sight;y more secure than fastapi form, using this will be able to see the form in swagger ui itself
-from fastapi.security import OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
+from jose import jwt, JWTError
 
 # it's a route instead of entire application which will be using in main.py file
-router=APIRouter()
+router=APIRouter(
+    prefix='/auth',  # each endpoint start with prefix
+    tags=['auth']
+)
+
+
+SECRET_KEY = ''
+ALGORITHM = ''
 
 # for hashed password
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
+
+# tokenUrl parameter conatins the url that the client will send to our fastapi application
+# basically the endpoint in which we are getting username and password from user and returning the access token
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/login')
 
 def get_db():
     db = SessionLocal()
@@ -31,7 +44,27 @@ def authenticate_user(username, password, db):
         return False
     if not bcrypt_context.verify(password, user.hashed_password):
         return False
-    return True
+    return user
+
+def create_access_token(username: str, user_id: int, expire_delta: timedelta):
+    encode = {
+        'sub':username,
+        'id':user_id
+    }
+    expires=datetime.now(timezone.utc) + expire_delta
+    encode.update({'exp':expires})
+    return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+    try:
+        payload=jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get('sub')
+        user_id: int = payload.get('id')
+        if username is None or user_id is None:
+            raise HTTPException(status_code=401, detail='Could not validate the user')
+        return{'username': username, 'id': user_id}
+    except JWTError:
+        raise HTTPException(status_code=401, detail='Could not validate the user')
 
 # not added id and is_active as id is auto-increament and is_active as initial created user will stay active
 class UserRequest(BaseModel):
@@ -42,7 +75,11 @@ class UserRequest(BaseModel):
     password: str
     role: str
 
-@router.get('/auth')
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+@router.get('/user')
 def get_user(db: db_dependency):
     return db.query(Users).all()
 
@@ -61,11 +98,14 @@ def create_user(db: db_dependency, user: UserRequest):
     db.add(user_model)
     db.commit()
 
-@router.post('/authcheck')
+@router.post('/login', response_model=Token)
 def login_for_access_token(form: formData, db: db_dependency):
-    if not authenticate_user(form.username,form.password,db):
-        raise HTTPException(status_code=404,detail='Either user does not exists or invalid password')
-    return 'user authenticated successful'
+    user = authenticate_user(form.username,form.password,db)
+    if not user:
+        raise HTTPException(status_code=401,detail='Either user does not exists or invalid password')
+    
+    token = create_access_token(user.username,user.id,timedelta(minutes=20))
+    return {'access_token':token, 'token_type': 'bearer'}
 
 
 # JSON Web Token (https://jwt.io/)

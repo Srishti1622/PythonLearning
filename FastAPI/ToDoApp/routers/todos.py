@@ -8,9 +8,13 @@ from models import Todos
 from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
+from .auth import get_current_user
 
 
-router=APIRouter()
+router=APIRouter(
+    prefix='/todo',
+    tags=['todoApp']
+)
 
 # If sqlite3 is installed then we make use of terminal to manipulate database 
 # it will open sqlite environment
@@ -35,6 +39,9 @@ def get_db():
 # here this function relies on our DB opening up, we want to create a session and being able to then return that information back to us and then closing the session behind the scenes
 db_dependency = Annotated[Session, Depends(get_db)]
 
+# whenever we include this dependency then, first always it will check for authentication and in swagger ui, will get it show as a lock/unlock icon to login/logout
+user_dependency = Annotated[dict, Depends(get_current_user)]
+
 class ToDoRequest(BaseModel):
     title: str = Field(min_length=3)
     description: str = Field(min_length=3, max_length=100)
@@ -42,20 +49,42 @@ class ToDoRequest(BaseModel):
     complete: bool
 
 # querying tabble named 'Todos'
+# @router.get('/', status_code=status.HTTP_200_OK)
+# def read_all_todos(db: db_dependency):
+#     return db.query(Todos).all()
 @router.get('/', status_code=status.HTTP_200_OK)
-def read_all_todos(db: db_dependency):
-    return db.query(Todos).all()
+def read_all_todos(user: user_dependency, db: db_dependency):
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication failed!')
+    
+    return db.query(Todos).filter(Todos.owner_id==user.get('id')).all()
 
+# @router.get('/todo/{todo_id}', status_code=status.HTTP_200_OK)
+# def read_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
+#     todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+#     if todo_model is not None:
+#         return todo_model
+#     raise HTTPException(status_code=404, detail='Todo not found')
 @router.get('/todo/{todo_id}', status_code=status.HTTP_200_OK)
-def read_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
-    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+def read_specific_todo(user: user_dependency, db: db_dependency, todo_id: int = Path(gt=0)):
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication failed!')
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).filter(Todos.owner_id==user.get('id')).first()
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail='Todo not found')
 
+# @router.post('/todo', status_code=status.HTTP_201_CREATED)
+# def create_todo(db: db_dependency, todo: ToDoRequest):
+#     todo_model = Todos(**todo.dict())
+#     db.add(todo_model)
+#     db.commit()
+# with user authentication
 @router.post('/todo', status_code=status.HTTP_201_CREATED)
-def create_todo(db: db_dependency, todo: ToDoRequest):
-    todo_model = Todos(**todo.dict())
+def create_todo(user: user_dependency, db: db_dependency, todo: ToDoRequest):
+    if user is None:
+        raise HTTPException(status_code=401, detail='Authentication failed!')
+    todo_model = Todos(**todo.dict(), owner_id=user.get('id'))
     db.add(todo_model)
     db.commit()
 
