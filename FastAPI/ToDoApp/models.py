@@ -6,7 +6,7 @@ from database import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
 # __tablename__ is just a way for SQLAlchemy to know what to name this table inside our databse
-class User(Base):
+class Users(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True, index=True)

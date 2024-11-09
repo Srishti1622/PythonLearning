@@ -3,3 +3,5 @@ streamlit
 fastapi
 uvicorn
 sqlalchemy
+passlib
+bcrypt==4.0.1
