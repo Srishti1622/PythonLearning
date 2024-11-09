@@ -41,6 +41,7 @@ class ToDoRequest(BaseModel):
     priority: int = Field(gt=0, lt=6)
     complete: bool
 
+# querying tabble named 'Todos'
 @router.get('/', status_code=status.HTTP_200_OK)
 def read_all_todos(db: db_dependency):
     return db.query(Todos).all()

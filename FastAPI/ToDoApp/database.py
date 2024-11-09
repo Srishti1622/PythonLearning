@@ -1,9 +1,11 @@
+# IMPORTANT: SQLAlchemy cannot enhance a table for us. It can only create a table for us.
+# We can enhance a table using something called Alembic
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 # this url is going to used to create a location of this database on our fastapi application
-SQLALCHEMY_DATABASE_URL = 'sqlite:///./todos.db'
+SQLALCHEMY_DATABASE_URL = 'sqlite:///./todoApp.db'
 
 # create a database engine that we can use to be able to open up a connection and to able to use our database
 # connect arguments are arguments that we can pass into our create engine, which will allow us to define some kind of connection to a database
