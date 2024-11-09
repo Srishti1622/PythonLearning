@@ -18,8 +18,8 @@ router=APIRouter(
 )
 
 
-SECRET_KEY = ''
-ALGORITHM = ''
+# SECRET_KEY = ''
+# ALGORITHM = ''
 
 # for hashed password
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
