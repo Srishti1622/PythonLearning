@@ -35,7 +35,7 @@ class UserRequest(BaseModel):
 def get_user(db: db_dependency):
     return db.query(Users).all()
 
-@router.post('/user', status_code=status.HTTP_201_CREATED)
+@router.post('/signup', status_code=status.HTTP_201_CREATED)
 def create_user(db: db_dependency, user: UserRequest):
     user_model=Users(
         email=user.email,
@@ -49,3 +49,7 @@ def create_user(db: db_dependency, user: UserRequest):
     
     db.add(user_model)
     db.commit()
+
+@router.post('/token')
+def login_for_access_token():
+    return 'token'
