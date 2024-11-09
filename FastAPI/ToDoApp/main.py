@@ -8,6 +8,8 @@ from models import Todos
 from database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
+# import auth from auth.py file 
+from routers import auth
 
 
 app=FastAPI()
@@ -15,6 +17,9 @@ app=FastAPI()
 # this will create a database in this mentioned location in database.py in the variable SQLALCHEMY_DATABASE_URL
 # in this case it's inside ToDoApp foldera
 models.Base.metadata.create_all(bind=engine)
+
+# to let application know to include the mentioned routers route in the application
+app.include_router(auth.router)
 
 # If sqlite3 is installed then we make use of terminal to manipulate database 
 # it will open sqlite environment
