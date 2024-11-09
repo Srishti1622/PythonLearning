@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, Path
 from starlette import status
+from pydantic import BaseModel, Field
 # importing models.py file
 import models
 from models import Todos
@@ -38,6 +39,12 @@ def get_db():
 # here this function relies on our DB opening up, we want to create a session and being able to then return that information back to us and then closing the session behind the scenes
 db_dependency = Annotated[Session, Depends(get_db)]
 
+class ToDoRequest(BaseModel):
+    title: str = Field(min_length=3)
+    description: str = Field(min_length=3, max_length=100)
+    priority: int = Field(gt=0, lt=6)
+    complete: bool
+
 @app.get('/', status_code=status.HTTP_200_OK)
 def read_all_todos(db: db_dependency):
     return db.query(Todos).all()
@@ -48,3 +55,23 @@ def read_specific_todo(db: db_dependency, todo_id: int = Path(gt=0)):
     if todo_model is not None:
         return todo_model
     raise HTTPException(status_code=404, detail='Todo not found')
+
+@app.post('/todo', status_code=status.HTTP_201_CREATED)
+def create_todo(db: db_dependency, todo: ToDoRequest):
+    todo_model = Todos(**todo.dict())
+    db.add(todo_model)
+    db.commit()
+
+@app.put('/todo/update/{todo_id}', status_code=status.HTTP_204_NO_CONTENT)
+def update_specific_todo(db: db_dependency, todo_id: int , todo: ToDoRequest):
+    todo_model=db.query(Todos).filter(Todos.id==todo_id).first()
+    if todo_model is None:
+        raise HTTPException(status_code=404, detail='Todo not found')
+    
+    todo_model.title=todo.title
+    todo_model.description=todo.description
+    todo_model.priority=todo.priority
+    todo_model.complete=todo.complete
+
+    db.add(todo_model)
+    db.commit()
