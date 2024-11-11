@@ -15,3 +15,5 @@
 # -- then next next and installation will start and then choose this postgresql in stack builder install
 # -- once done with all installation, open pg admin app, which is UI for postgresql, provide the password which we set while installing
 
+# Creating tables
+-- if server is not already there click on create server group, else right click on server and then choose register server and provide server name as here "ToDoApplication" 
