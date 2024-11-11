@@ -58,3 +58,15 @@ Base=declarative_base()
 # Connecting the FastAPI with MySQL
 # IMPORTANT - everything is same as sqlite3, just change the url as below and engine and then use this setup in ToDoApp/database.py and evrything else keep as it is 
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+# here 'mysql+pymysql://superusername:password@hostname:post/databasename'
+SQLALCHEMY_DATABASE_URL = 'mysql+pymysql://root:test1234!@127.0.0.1:3306/ToDoApplicationdatabase'
+
+engine = create_engine(SQLALCHEMY_DATABASE_URL)
+
+SessionLocal=sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base=declarative_base()
