@@ -50,3 +50,11 @@ Base=declarative_base()
 # -- open .exe and do next next untill get to setup root password and add new user as username "root" with role DB admin 
 # -- uncheck the start the mysql server at system startup
 # -- once installed, it will open mysql workbench, double click on local instance and provide the password that we have setted up 
+
+# Creating tables
+# -- right click on schemas, and choose create schema and give name as "TodoApplicationDatabase"
+# -- now run the mysql queries on the terminal which gets open by clicking on database/schema
+
+# Connecting the FastAPI with MySQL
+# IMPORTANT - everything is same as sqlite3, just change the url as below and engine and then use this setup in ToDoApp/database.py and evrything else keep as it is 
+
