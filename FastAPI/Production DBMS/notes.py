@@ -16,4 +16,9 @@
 # -- once done with all installation, open pg admin app, which is UI for postgresql, provide the password which we set while installing
 
 # Creating tables
--- if server is not already there click on create server group, else right click on server and then choose register server and provide server name as here "ToDoApplication" 
+-- if server is not already there click on create server group, else right click on server and then choose register server and provide server name as here "ToDoApplication", host name as "localhost", and password
+-- once you can see the server created, first check for super user called postgres and right click to go to properties and in privileges check for superuser check and is noot present then create one superuser by right clicking on login/group roles
+-- now right click on database, create a new database and provide name as "ToDoApplicationDatabase"
+-- if you are not connected to particular database then right click on that database and choose connect to database
+-- now create tables by running the postgresql queries to create table and add data to those tables
+
