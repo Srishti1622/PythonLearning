@@ -18,3 +18,6 @@
 # -- alembic directory : has all environmental properties for alembic, holds all revisions of application, where we can call the migrations for upgrading and downgrading
 # These are created automatically by alembic so we can upgrade, downgrade and keep data integrity of our application
 
+Alembic setup
+-- pip install alembic
+-- then in the terminal itself, run command - alembic init environment_name/folder_name here "alembic init alembic"
