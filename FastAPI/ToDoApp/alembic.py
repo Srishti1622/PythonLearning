@@ -22,8 +22,8 @@
 # -- pip install alembic
 # -- then in the terminal itself, run command - alembic init environment_name/folder_name here "alembic init alembic"
 # -- change the sqlalchemy.url path n alembic.ini file to our database file url
-# --then go to alembic/env.py file and import models and then remove if statement which line sets up loggers basically and make the lines inside that if statement as normal without if
-# -- then setup target_metadata=models.Base.metadata in alembic/env.py
+# --then go to alembic/env.py file and import models and then remove if statement(line 16) which line sets up loggers basically and make the lines inside that if statement as normal without if
+# -- then setup target_metadata=models.Base.metadata in alembic/env.py in line 23
 # -- now create new revision by running command - alembic revision -m "create phone number for user table"
 # -- it will create new revision_id.py file inside alembic/version/filename.py
 # -- go to revision file and modify the upgrade function as 
