@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from models import Users
+from ..models import Users
 from passlib.context import CryptContext
 from typing import Annotated
 from sqlalchemy.orm import Session
-from database import SessionLocal
+from ..database import SessionLocal
 from starlette import status
 from datetime import timedelta, datetime, timezone
 # special form that will be sight;y more secure than fastapi form, using this will be able to see the form in swagger ui itself

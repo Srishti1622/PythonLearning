@@ -2,10 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, Path
 from starlette import status
 from pydantic import BaseModel, Field
 # importing models.py file
-import models
-from models import Todos
+from ..models import Todos
 # import engine which we have created in database.py file
-from database import engine, SessionLocal
+from ..database import engine, SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
 # import to inject dependency for user authentication
