@@ -97,3 +97,11 @@ def test_person_initialization(default_student):
     assert default_student.last=='Deo', 'last name should be Deo'
     assert default_student.major=='CS'
     assert default_student.years==3
+
+
+# Test Database
+# -- create a fake Database that can store data
+# -- create testing dependencies that are separate from our production dependencies
+# -- this way we can do integration testing to make sure our entire project is working correctly when we run our tests
+# -- app is live = production dependencies
+# -- app is testing = testing dependencies
