@@ -17,8 +17,10 @@ router=APIRouter(
     tags=['auth']
 )
 
-SECRET_KEY = '5db3199bb9475825b11125df1c6ee82ed4d0ba64b51458eed702e5d81286e855ex-29whnes98d23snd92ed3j'
-ALGORITHM = 'HS256ex-123450'
+SECRET_KEY = '5db3199bb9475825b11125df1c6ee82ed4d0ba64b51458eed702e5d81286e855'
+ALGORITHM = 'HS256'
+# SECRET_KEY = '5db3199bb9475825b11125df1c6ee82ed4d0ba64b51458eed702e5d81286e855ex-29whnes98d23snd92ed3j'
+# ALGORITHM = 'HS256ex-123450'
 # SECRET_KEY = ''
 # ALGORITHM = ''
 
@@ -78,6 +80,8 @@ class UserRequest(BaseModel):
     last_name: str
     password: str
     role: str
+    # remove phone_number from here also after doing downgrade
+    phone_number: str
 
 class Token(BaseModel):
     access_token: str
@@ -96,7 +100,9 @@ def create_user(db: db_dependency, user: UserRequest):
         last_name=user.last_name,
         hashed_password=bcrypt_context.hash(user.password),
         role=user.role,
-        is_active=True
+        is_active=True,
+        # remove phone_number from here also after doing downgrade
+        phone_number=user.phone_number
     )
     
     db.add(user_model)
