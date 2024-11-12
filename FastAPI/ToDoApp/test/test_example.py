@@ -30,6 +30,8 @@
 # if condition is true, test passes
 # if condition is false, test fails
 
+import pytest
+
 # Validate Integers
 def test_equal_or_not_equal():
     assert 3 == 3
@@ -66,3 +68,31 @@ def test_list():
     assert 7 not in num_list
     assert all(num_list)
     assert not any(any_list)
+
+# Validate Objects
+class Student:
+    def __init__(self, first:str, last:str, major:str, years:int):
+        self.first=first
+        self.last=last
+        self.major=major
+        self.years=years
+
+# this is the old method which will take lot of time and efforts to write the code for each new object created
+def test_person_initialization_old():
+    p=Student('John', 'Deo', 'CS', 3)
+    assert p.first=='John', 'first name should be John'
+    assert p.last=='Deo', 'last name should be Deo'
+    assert p.major=='CS'
+    assert p.years==3
+
+# instead we can use 'fixer' where we can pass that default student as a parameter into our function, which automatically now allows us to be able to use that student as that parameterized value
+@pytest.fixture
+def default_student():
+    return Student('John', 'Deo', 'CS', 3)
+# instead of creating object everytime when testing, we are now passing default_student fixture
+# pytest fixture allows us to reuse python objects that might be similar within the entire application
+def test_person_initialization(default_student):
+    assert default_student.first=='John', 'first name should be John'
+    assert default_student.last=='Deo', 'last name should be Deo'
+    assert default_student.major=='CS'
+    assert default_student.years==3
