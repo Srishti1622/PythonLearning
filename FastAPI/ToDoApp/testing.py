@@ -1,0 +1,17 @@
+# # Testing
+# -- it is a way for us to make sure that our application is working as intended
+# -- part of the software development lifecycle (SDLC) that aims to identify:
+#     -- bugs, error, defects
+# -- three different ways to do testing:
+#     -- manual : which we do ourselves by just running the application
+#     -- unit : involves testing individual components or units of software in isolation from the rest of the application, validates that each unit of the software performs as designed, developers write unit tests during the development phase, these tests are automated and executed by a testing framework (Pytest)
+#     -- integration : instead of testing a single unit like unit testing, integration testing focuses on testing the iteractions between different unites or components of the piece of software, helps identify problems for the entire solution, ex- call an api endpoint and make sure the correct solution is returned
+
+
+# Pytest
+# -- popular testing framework for python
+# -- known for simplicity, scalability and ability to handle both unit and integration tests
+# -- top reasons to use Pytest:
+#     -> simple and flexible : native assertions
+#     -> fictures : feature setup and teardown
+#     -> parameterized testing : run same tests with different data
