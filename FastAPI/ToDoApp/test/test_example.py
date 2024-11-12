@@ -25,6 +25,7 @@
 # -- create a file named "test_example.py"
 
 # IMPORTANT: to run all the tests present, we need to run the command - pytest
+# if want to not to display warnings while running the test cases, then run the command - pytest --disable-warnings
 
 # Assertion = statement that checks if a condition is true
 # if condition is true, test passes

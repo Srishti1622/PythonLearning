@@ -2,7 +2,8 @@
 # Database model is going to be the actual record that is inside a database table
 
 # this the imported from database.py file, the object we have created in that file of the database
-from .database import Base 
+# from database import Base       # normal path
+from .database import Base        # relative path
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
 # __tablename__ is just a way for SQLAlchemy to know what to name this table inside our databse
