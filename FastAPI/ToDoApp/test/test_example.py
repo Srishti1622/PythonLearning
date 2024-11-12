@@ -23,3 +23,46 @@
 # -- create a folder named test inside the project directory
 # -- create a file named "__init__.py"
 # -- create a file named "test_example.py"
+
+# IMPORTANT: to run all the tests present, we need to run the command - pytest
+
+# Assertion = statement that checks if a condition is true
+# if condition is true, test passes
+# if condition is false, test fails
+
+# Validate Integers
+def test_equal_or_not_equal():
+    assert 3 == 3
+    assert 3 != 1
+    assert 3 >= 2
+    assert 3 != 2
+
+# Validate Instances
+def test_is_instance():
+    assert isinstance('this is a string', str)
+    assert not isinstance('10', int)
+
+# Validate Booleans
+def test_boolean():
+    validated=True
+    assert validated is True
+    assert ('hello'=='world') is False
+
+# Validate Types
+def test_type():
+    assert type('this is a string') is str
+    assert type('world') is not int
+
+# Validate Greater than and less than
+def test_greater_and_less_than():
+    assert 7>3
+    assert 4<10
+
+# Validate Lists
+def test_list():
+    num_list=[1,2,3,4,5]
+    any_list=[False,False]
+    assert 1 in num_list
+    assert 7 not in num_list
+    assert all(num_list)
+    assert not any(any_list)
