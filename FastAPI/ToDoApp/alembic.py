@@ -18,6 +18,21 @@
 # -- alembic directory : has all environmental properties for alembic, holds all revisions of application, where we can call the migrations for upgrading and downgrading
 # These are created automatically by alembic so we can upgrade, downgrade and keep data integrity of our application
 
-Alembic setup
--- pip install alembic
--- then in the terminal itself, run command - alembic init environment_name/folder_name here "alembic init alembic"
+# Alembic setup
+# -- pip install alembic
+# -- then in the terminal itself, run command - alembic init environment_name/folder_name here "alembic init alembic"
+# -- change the sqlalchemy.url path n alembic.ini file to our database file url
+# --then go to alembic/env.py file and import models and then remove if statement which line sets up loggers basically and make the lines inside that if statement as normal without if
+# -- then setup target_metadata=models.Base.metadata in alembic/env.py
+# -- now create new revision by running command - alembic revision -m "create phone number for user table"
+# -- it will create new revision_id.py file inside alembic/version/filename.py
+# -- go to revision file and modify the upgrade function as 
+#     def upgrade() -> None:
+#         op.add_column('users', sa.Column('phone_number', sa.String(), nullable=True))
+# -- then run command to upgrade - alembic upgrade revision_id
+# -- also need to add the column in models.py file where defined the schema for tables
+# -- go to revision file and modify the downgrade function as 
+#     def downgrade() -> None:
+#         op.drop_column('users', 'phone_number')
+# -- then run command to downgrade - alembic downgrade -1
+# -- also need to remove the column in models.py file where defined the schema for tables
