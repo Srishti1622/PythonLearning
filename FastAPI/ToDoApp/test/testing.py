@@ -15,3 +15,11 @@
 #     -> simple and flexible : native assertions
 #     -> fictures : feature setup and teardown
 #     -> parameterized testing : run same tests with different data
+
+# NOTES: Pytest will run all tests automatically that sit within files that have the name 'test' in them
+# Ex- 'todos.py' will be tested by 'test_todos.py'
+
+# Setup 
+# -- create a folder named test inside the project directory
+# -- create a file named "__init__.py"
+# -- create a file named "test_example.py"
