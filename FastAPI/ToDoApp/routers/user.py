@@ -44,7 +44,7 @@ def change_password(user: user_dependency, db: db_dependency, new_user: UserVeri
         raise HTTPException(status_code=401, detail='Authentication failed')
     user_model=db.query(Users).filter(Users.id==user.get('id')).first()
     if not bcrypt_context.verify(new_user.password,user_model.hashed_password):
-        raise HTTPException(status_code=404, detail='Old Password does not matched')
+        raise HTTPException(status_code=401, detail='Old Password does not matched')
     user_model.hashed_password=bcrypt_context.hash(new_user.new_password)
     db.add(user_model)
     db.commit() 
