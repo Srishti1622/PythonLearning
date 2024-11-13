@@ -62,6 +62,7 @@ role:str, expire_delta: timedelta):
     encode.update({'exp':expires})
     return jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
 
+# async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
 def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
     try:
         payload=jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

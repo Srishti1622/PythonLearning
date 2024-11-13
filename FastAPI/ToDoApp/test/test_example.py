@@ -19,6 +19,10 @@
 # NOTES: Pytest will run all tests automatically that sit within files that have the name 'test' in them
 # Ex- 'todos.py' will be tested by 'test_todos.py'
 
+# by default pytest does not test async function, it skips that function and not test, if we want to test async function we need to install some libraries
+# pytest also provide one child library using which we can test async functions
+# pip install pytest-asyncio
+
 # Setup 
 # -- create a folder named test inside the project directory
 # -- create a file named "__init__.py"
