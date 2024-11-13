@@ -32,6 +32,7 @@ def override_get_db():
 # mocking the data for user dependency
 def override_get_current_user():
     return {'username':'srishtia','id':1, 'role':'admin'}
+    # return {'username':'srishtia','id':1, 'role':'user'}
 
 client=TestClient(app)
 
