@@ -11,3 +11,5 @@ langchain-text-splitters
 python-dotenv
 langchain-openai
 chromadb
+sentence-transformers
+langchain-huggingface
