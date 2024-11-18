@@ -8,7 +8,10 @@
 
 
 import os 
-import streamlit as st
+# import streamlit as st
+import uvicorn
+from fastapi import FastAPI
+from langserve import add_routes
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
@@ -56,12 +59,30 @@ chain=prompt|llm|output_parser
 # when using prompt_directly
 # chain_directly=llm|output_parser
 
-st.title("Translator")
-lang=st.text_input("Language")
-input=st.text_input("Sentence to translate")
+# st.title("Translator")
+# lang=st.text_input("Language")
+# input=st.text_input("Sentence to translate")
 
-if lang and input:
-    st.write(chain.invoke({"input":{input},"lang":{lang}}))
+# if lang and input:
+#     st.write(chain.invoke({"input":{input},"lang":{lang}}))
 
 # st.title("static prompt using human and system messages")
 # st.write(chain_directly.invoke(prompt_directly))
+
+# App definition
+app=FastAPI(
+    title="LangChainServe",
+    version="1.0",
+    description="A simple API server using Langchain runnable interfaces"
+)
+
+# add_routes helps us to create our api 
+add_routes(
+    app,
+    chain,
+    path="/chain"
+)
+
+
+if __name__=="__main__":
+    uvicorn.run(app,host="localhost",port=8000)
