@@ -62,6 +62,11 @@ def create_vector_embeddings():
 
 if pdf:
     create_vector_embeddings()
+
+    # deleting the file from temporary location
+    if os.path.exists("temp_uploaded_file.pdf"):
+        os.remove("temp_uploaded_file.pdf")
+        
     st.sidebar.write("Uploading done, now you can query the document")
 
     st.title("DocumentQnA")
