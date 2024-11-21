@@ -26,8 +26,8 @@ cursor.execute("""Insert into STUDENT values('Srishti','Full stack ai engineer',
 cursor.execute("""Insert into STUDENT values('Akshay','Full stack ai engineer','A',95)""")
 cursor.execute("""Insert into STUDENT values('Krishna','ai engineer','B',45)""")
 cursor.execute("""Insert into STUDENT values('Mansi','software engineer','A',78)""")
-cursor.execute("""Insert into STUDENT values('John',ai engineer','B',67)""")
-cursor.execute("""Insert into STUDENT values('Jatin',software engineer','B',34)""")
+cursor.execute("""Insert into STUDENT values('John','ai engineer','B',67)""")
+cursor.execute("""Insert into STUDENT values('Jatin','software engineer','B',34)""")
 
 # display all the records
 print("The inserted records are:")
