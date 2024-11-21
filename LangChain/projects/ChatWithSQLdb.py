@@ -20,3 +20,21 @@ create table STUDENT(
 
 # execute the query
 cursor.execute(table_info)
+
+# insert the data in student table
+cursor.execute("""Insert into STUDENT values('Srishti','Full stack ai engineer','A',100)""")
+cursor.execute("""Insert into STUDENT values('Akshay','Full stack ai engineer','A',95)""")
+cursor.execute("""Insert into STUDENT values('Krishna','ai engineer','B',45)""")
+cursor.execute("""Insert into STUDENT values('Mansi','software engineer','A',78)""")
+cursor.execute("""Insert into STUDENT values('John',ai engineer','B',67)""")
+cursor.execute("""Insert into STUDENT values('Jatin',software engineer','B',34)""")
+
+# display all the records
+print("The inserted records are:")
+data=cursor.execute('''Select * from STUDENT''')
+for row in data:
+    print(row)
+
+# at last we always have to commit and close the connection
+connection.commit()
+connection.close()
