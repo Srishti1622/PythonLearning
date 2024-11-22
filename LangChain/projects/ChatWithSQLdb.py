@@ -43,3 +43,4 @@ connection.close()
 # connecting with MySQL
 # first we need to download the mysql database and wrokbench
 # then we need to create table and add records in that table
+# then creating an application in streamlit to connect and query to sqlite3 and mysql database
