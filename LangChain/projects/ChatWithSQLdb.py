@@ -41,3 +41,4 @@ connection.close()
 
 
 # connecting with MySQL
+# first we need to download the mysql database and wrokbench
