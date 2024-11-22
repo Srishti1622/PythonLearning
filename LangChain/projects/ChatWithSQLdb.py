@@ -38,3 +38,6 @@ for row in data:
 # at last we always have to commit and close the connection
 connection.commit()
 connection.close()
+
+
+# connecting with MySQL
