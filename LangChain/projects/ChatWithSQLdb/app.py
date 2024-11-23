@@ -40,9 +40,6 @@ if not db_uri:
 if not api_key:
     st.info("Please provide api key")
 
-# creating llm model
-groq_llm=ChatGroq(groq_api_key=api_key,model_name="Llama3-8b-8192",streaming=True)
-
 # this decorator is for caching as we don't need to connect each time to db
 # ttl= total time limit
 @st.cache_resource(ttl='2h')
@@ -67,3 +64,39 @@ if db_uri==MYSQL:
 else:
     db=configure_db(db_uri)
 
+
+if api_key:
+    # creating llm model
+    groq_llm=ChatGroq(groq_api_key=api_key,model_name="Llama3-8b-8192",streaming=True)
+    # toolkit:
+    toolkit=SQLDatabaseToolkit(db=db,llm=groq_llm)
+
+    agent=create_sql_agent(
+        llm=groq_llm,
+        toolkit=toolkit,
+        verbose=True,
+        agent_type=AgentType.ZERO_SHOT_REACT_DESCRIPTION
+    )
+
+    # for maintaining the chat history
+    if "messages" not in st.session_state or st.sidebar.button("Clear message history"):
+        st.session_state["messages"]=[{'role':'assistant','content':'How can I help you?'}]
+
+    for msg in st.session_state.messages:
+        st.chat_message(msg['role']).write(msg['content'])
+
+    user_query=st.chat_input(placeholder="Ask anything from the database")
+
+    if user_query:
+        # appending each conversation to session state
+        st.session_state.messages.append({'role':'user','content':user_query})
+        # adding in chat messages to show in the screen
+        st.chat_message('user').write(user_query)
+
+        # this is to display each processing of llm
+        with st.chat_message('assistant'):
+            streamlit_callback=StreamlitCallbackHandler(st.container())
+            response=agent.run(user_query,callbacks=[streamlit_callback])
+            # adding the llm response to session state
+            st.session_state.messages.append({'role':'assistant','content':response})
+            st.write(response)
