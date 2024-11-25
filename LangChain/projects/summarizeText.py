@@ -66,11 +66,7 @@ if st.button("Summarize"):
                     if transcript_text.startswith("Error"):
                         st.error(transcript_text)
                     else:
-                        # docs = [{"page_content": transcript_text}]
-                        docs=Document(
-                            page_content=transcript_text,
-                            metadata={"source": url}
-                        )
+                        docs = [Document(page_content=transcript_text)]
                 else:
                     loader=UnstructuredURLLoader(
                         urls=[url],
