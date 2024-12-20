@@ -1,0 +1,10 @@
+Children Public Sr. Sec. School
+8th grade students information
+
+Name    Birthday    Email
+Adarsh  26 sep, 2000    bjhu@gmail.com
+Munmun  13 july, 1999 gowdhop@jhuo.com
+Om  30 Oct, 2004 hidhwu@hio.com
+Srishti 16 Mar, 2001 zsihoi@huihijd.com
+Akshay 25 Jan, 2000 hoiwhi@guihjn.com
+Jatin 16 Jan, 1998 hwhsoi@hoih.com
