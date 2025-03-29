@@ -50,3 +50,13 @@ if uploaded is not None:
 
 # inbuilt sidebar in streamlit ui
 st.sidebar.write("this is the fixed left sidebar")
+
+
+# Deploying the code in streamlit cloud
+# 1. upload the files in github repo
+# 2. login streamlot.io
+# 3. connect to github repo with streamlit.io
+# 4. click on create app and provide the repo details
+# 5. provide advanced details if needed
+# 6. click on deploy to deploy the streamlit ui in strealit cloud
+
