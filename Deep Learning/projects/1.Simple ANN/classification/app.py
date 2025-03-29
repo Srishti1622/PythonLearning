@@ -6,15 +6,15 @@ import numpy as np
 import streamlit as st
 
 # loading the models and pickle files
-model=load_model(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1. Simple ANN\classification\model.h5')
+model=load_model(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1.Simple ANN\classification\model.h5')
 
-with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1. Simple ANN\classification\labelencoder.pkl','rb') as file:
+with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1.Simple ANN\classification\labelencoder.pkl','rb') as file:
     labelencoder=pickle.load(file)
 
-with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1. Simple ANN\classification\onehotencoder.pkl','rb') as file:
+with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1.Simple ANN\classification\onehotencoder.pkl','rb') as file:
     onehotencoder=pickle.load(file)
 
-with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1. Simple ANN\classification\scaler.pkl','rb') as file:
+with open(r'C:\Users\srish\PythonLearning\Deep Learning\projects\1.Simple ANN\classification\scaler.pkl','rb') as file:
     scaler=pickle.load(file)
 
 # get the input parameters value from user using streamlit ui
