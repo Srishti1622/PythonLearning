@@ -7,8 +7,13 @@ def get_requirements(filepath:str)->List[str]:
     requirements=[]
     with open(filepath,'r') as file:
         requirements=file.readlines()
+        # as each library is written in new line so will get new line character and we need to remove that
         requirements=[req.replace('\n','') for req in requirements]
+        # need to remove "-e ."
+        if "-e ." in requirements:
+            requirements.remove('-e .')
         
+    return requirements
 
 # consider this as a metadata of entire application
 setup(
