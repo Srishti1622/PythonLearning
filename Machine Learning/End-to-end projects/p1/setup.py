@@ -7,6 +7,7 @@ def get_requirements(filepath:str)->List[str]:
     requirements=[]
     with open(filepath,'r') as file:
         requirements=file.readlines()
+        requirements=[req.replace('\n','') for req in requirements]
         
 
 # consider this as a metadata of entire application
