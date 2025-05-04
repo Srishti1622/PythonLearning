@@ -10,7 +10,7 @@ from datetime import datetime
 # LOG_FILE_PATH=os.path.join(logs_path,LOG_FILE)
 
 # logging all the logs in single file
-LOGS_DIR=os.path.join(os.getcwd(),'logs')
+LOGS_DIR=os.path.join(os.getcwd(),'../../logs')
 os.makedirs(LOGS_DIR,exist_ok=True)
 
 LOG_FILE_PATH=os.path.join(LOGS_DIR,'app.log')

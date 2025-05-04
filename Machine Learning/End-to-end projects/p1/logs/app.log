@@ -1,0 +1,4 @@
+[ 2025-05-04 10:51:16,608 ] 20 P1-Project - INFO - Entered the data ingestion method
+[ 2025-05-04 10:51:16,612 ] 23 P1-Project - INFO - Read the dataset as df
+[ 2025-05-04 10:51:16,617 ] 29 P1-Project - INFO - train test split initiated
+[ 2025-05-04 10:51:16,622 ] 35 P1-Project - INFO - ingestion completed
