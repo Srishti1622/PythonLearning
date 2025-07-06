@@ -34,4 +34,4 @@ output_parser=StrOutputParser()
 chain=ollama_prompt|ollama_llm|output_parser
 
 if input_question:
-    st.write(chain.invoke({input_question}))
+    st.write(chain.invoke({"question":input_question}))

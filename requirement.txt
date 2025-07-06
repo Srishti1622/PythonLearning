@@ -11,3 +11,5 @@ psycopg2-binary
 pymysql
 alembic
 pytest
+langchain_huggingface
+huggingface_hub

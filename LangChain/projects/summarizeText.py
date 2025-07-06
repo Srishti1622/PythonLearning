@@ -5,10 +5,12 @@
 # - youtube_transcript_api  -> it will help to read the entire transcript of the youtube video
 # - pip install pytube
 # - pip install unstructured
+
 import streamlit as st
 import validators
 from langchain.prompts import PromptTemplate
 from langchain_groq import ChatGroq
+from langchain_huggingface import HuggingFaceEndpoint
 from langchain.chains.summarize import load_summarize_chain
 from langchain_community.document_loaders import YoutubeLoader,UnstructuredURLLoader
 from youtube_transcript_api import YouTubeTranscriptApi
@@ -16,12 +18,16 @@ from youtube_transcript_api.formatters import TextFormatter
 from pytube import YouTube
 from langchain_core.documents import Document
 
+
 # streamlit app
 st.set_page_config(page_title="Summarize text from Youtube or Website")
 st.title("Summarize text from Youtube or Website")
 
 # getting api key from user
-api_key=st.sidebar.text_input("Enter Groq API Key",type='password')
+# api_key=st.sidebar.text_input("Enter Groq API Key",type='password')
+
+# for using huggingface
+hug_api_key=st.sidebar.text_input("Enter HuggingFace API Key",type='password')
 
 # getting url from the user 
 url=st.text_input("Provide the URL whose content you want to summarize")
@@ -49,15 +55,16 @@ def fetch_youtube_transcript(video_url):
 
 # click button to get the summarize content
 if st.button("Summarize"):
-    if not api_key.strip() or not url.strip():
+    if not hug_api_key.strip() or not url.strip():
         st.error("Please provide the information")
     elif not validators.url(url):
         st.error("Please provide valid url")
     else:
         try:
             with st.spinner("Loading..."):
-                # llm model
-                groq_llm=ChatGroq(model="Gemma-7b-It",groq_api_key=api_key)
+                # llm model - comment when using huggingface api keys
+                # groq_llm=ChatGroq(model="Gemma-7b-It",groq_api_key=api_key)
+                hug_llm=HuggingFaceEndpoint(repo_id='meta-llama/Llama-3.2-11B-Vision-Instruct',max_length=150,temperature=0.7,token=hug_api_key)
 
                 # for loading data from youtube url
                 if "youtube.com" in url:
