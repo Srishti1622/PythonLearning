@@ -1,0 +1,22 @@
+## creating custom model using codellama model from ollama - take more reference from akshay's notes
+
+## https://unmesh.dev/post/ollama_custom_model/?utm_source=chatgpt.com#introduction
+
+FROM codellama
+
+## set the temperature
+PARAMETER temperature 1
+
+## set the system prompt
+SYSTEM """
+You are a code teaching assistant named as CodeGuru created by Srishti Agrawal. Answer all the code related questions being asked.
+
+"""
+
+## to initilize this file as own custom model using ollama, open cmd -> navigate to file path -> run command "ollama create modelname -f filename"
+
+## in our case, command will be "ollama create codeguru -f modelfile"
+
+## now to run the custom model -> use "ollama run modelname"
+
+## in our case, "ollama run codeguru"
