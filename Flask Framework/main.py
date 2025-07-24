@@ -78,7 +78,7 @@ def passvaluetohtml(value):
     return render_template('result.html',results=res)
 
 # Building url dynamically
-# url_for() is used to create dynamic urls
+# url_for() is used to create dynamic urls, here below 'success' and 'fail' are function names defined above
 # redirect() is used to redirect to mentioned url
 @app.route('/dynamicurl/<int:value>')
 def dynamicurl(value):
