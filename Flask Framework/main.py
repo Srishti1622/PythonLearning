@@ -57,11 +57,11 @@ def form():
 def success(score):
     if type(score)==int:
         return "This value is in int so we have typecasted it " + str(score)
-    return "The value by default is string if no datatype specified "+ score
+    return "The value by default is string if no datatype specified in success "+ score
 
 @app.route('/fail/<score>')
 def fail(score):
-    return "The value by default is string if no datatype specified "+ score
+    return "The value by default is string if no datatype specified in fail "+ score
 
 # Jinja2 Template Engine
 # {{ }} expressions to print output in html
@@ -82,7 +82,7 @@ def passvaluetohtml(value):
 # redirect() is used to redirect to mentioned url
 @app.route('/dynamicurl/<int:value>')
 def dynamicurl(value):
-    score=value+10
+    score=value+5
     if value<=10:
         return redirect(url_for('success',score=score))
     return redirect(url_for('fail',score=score))
@@ -90,6 +90,7 @@ def dynamicurl(value):
 
 # entry point of the any .py file
 # .run() will run the flask application. It take two important parameter host as string and debug as boolean
+# if host and port is not provided then will run on default port :5000
 # whenever we make any change in the code to see that change we need to restart the server but if we have used debug=True then it will automatically detect the change in the code and restart the server
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run(host='localhost',port='1622',debug=True)
